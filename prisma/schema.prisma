@@ -1,0 +1,64 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+model Children {
+  id                    String            @id @unique @db.Uuid
+  firstName             String            @db.VarChar(255)
+  lastName              String            @db.VarChar(255)
+  birthDate             String            @db.VarChar(255)
+  observations          String?           @db.VarChar(255)
+  address               Address?
+  responsibles          ResponsiblesOnChildrens[]
+  createdAt             DateTime          @default(now()) @db.Timestamp
+  updatedAt             DateTime?         @db.Timestamp
+}
+
+model Responsible {
+  id                    String            @id @unique @db.Uuid
+  firstName             String            @db.VarChar(255)
+  lastName              String            @db.VarChar(255)
+  email                 String            @db.VarChar(255)
+  phone                 String            @db.VarChar(255)
+  childrens             ResponsiblesOnChildrens[]
+  createdAt             DateTime          @default(now()) @db.Timestamp
+  updatedAt             DateTime?         @db.Timestamp
+}
+
+model ResponsiblesOnChildrens {
+  children              Children          @relation(fields: [childrenId], references: [id])
+  childrenId            String            @db.Uuid
+  responsible           Responsible       @relation(fields: [responsibleId], references: [id])
+  responsibleId         String            @db.Uuid
+  type                  EReponsibleType
+  assignedAt            DateTime          @default(now()) @db.Timestamp
+
+  @@id([childrenId, responsibleId])
+}
+
+model Address {
+  id             String        @unique @db.Uuid
+  name           String?       @db.VarChar(255)
+  state          String        @db.VarChar(255)
+  city           String        @db.VarChar(255)
+  street         String?       @db.VarChar(255)
+  number         Int?          @db.Integer
+  complement     String?       @db.VarChar(255)
+  createdAt      DateTime      @default(now()) @db.Timestamp
+  updatedAt      DateTime?     @db.Timestamp
+  children       Children?     @relation(fields: [childrenId], references: [id], onDelete: Cascade)
+  childrenId     String?       @unique @db.Uuid
+}
+
+enum EReponsibleType {
+  PAI
+  MAE
+  PARENTE
+  OUTRO
+}
