@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  app:
+    build: 
+      context: .
+    image: ibclkids/checkinkids-api
+    env_file: .env
+    container_name: checkinkids-api
+    ports:
+      - ${PORT}:${PORT}
+  
+  db:
+    image: postgres
+    container_name: checkinkids-db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: checkinkidsDb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
