@@ -1,18 +1,17 @@
-import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 // import { JwtService } from "@nestjs/jwt";
-import { differenceInSeconds, fromUnixTime, isAfter } from "date-fns";
-import { TokenDTO } from "../dtos/auth/token.dto";
+import { differenceInSeconds, fromUnixTime } from 'date-fns';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    // private readonly jwtService: JwtService,
-  ) {}
+  // constructor() // private readonly jwtService: JwtService,
+  // {}
 
   async authenticate(token: string): Promise<boolean> {
     const tokenExtracted = this.extractToken(token);
 
-    if (!tokenExtracted) throw new HttpException("Token não provido", HttpStatus.UNAUTHORIZED);
+    if (!tokenExtracted)
+      throw new HttpException('Token não provido', HttpStatus.UNAUTHORIZED);
 
     // const decodedToken = await this.jwtService.verify(tokenExtracted, { secret: process.env.SECRET_KEY_ACCESS_TOKEN });
 
@@ -20,13 +19,17 @@ export class AuthService {
 
     // if(!tokenExpirationIsAfterNow) throw new HttpException("Token está expirado", HttpStatus.UNAUTHORIZED);
 
-    return
+    return;
   }
 
   async login(_token: string): Promise<any> {
     const _tokenExtracted = this.extractToken(_token);
 
-    if (!_tokenExtracted) throw new HttpException("token não providenciado", HttpStatus.UNAUTHORIZED);
+    if (!_tokenExtracted)
+      throw new HttpException(
+        'token não providenciado',
+        HttpStatus.UNAUTHORIZED,
+      );
 
     // const _decodedToken = await this.coreServiceIntegration.verifyToken(_tokenExtracted)
     //   .catch(async e => {
@@ -56,7 +59,7 @@ export class AuthService {
   }
 
   private extractToken(tokenToExtract: string): string {
-    const [, token] = tokenToExtract.split("Bearer ");
+    const [, token] = tokenToExtract.split('Bearer ');
     return token;
   }
 }

@@ -8,21 +8,19 @@ import {
   Param,
   Post,
   Put,
-  Query
-} from "@nestjs/common";
-import { ChildrenService } from "../services/children.service";
-import { CreateChildrenDTO } from "../dtos/children/createChildren.dto";
-import { UpdateChildrenDTO } from "../dtos/children/updateChildren.dto";
-import { Page, PageResponse } from "../configs/database/page.model";
-import { Children } from "../entities/children.entity";
-import { FiltersChildrenDTO } from "../dtos/children/filtersChildren.dto";
-import { MappedChildrenDTO } from "../dtos/children/mappedChildren.dto";
+  Query,
+} from '@nestjs/common';
+import { ChildrenService } from '../services/children.service';
+import { CreateChildrenDTO } from '../dtos/children/createChildren.dto';
+import { UpdateChildrenDTO } from '../dtos/children/updateChildren.dto';
+import { Page, PageResponse } from '../configs/database/page.model';
+import { Children } from '../entities/children.entity';
+import { FiltersChildrenDTO } from '../dtos/children/filtersChildren.dto';
+import { MappedChildrenDTO } from '../dtos/children/mappedChildren.dto';
 
-@Controller("/api/childrens")
+@Controller('/api/childrens')
 export class ChildrenController {
-  constructor(
-    private readonly childrenService: ChildrenService
-  ) { }
+  constructor(private readonly childrenService: ChildrenService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -38,13 +36,19 @@ export class ChildrenController {
 
   @Put('/:id')
   @HttpCode(HttpStatus.OK)
-  async update(@Param('id') id: string, @Body() data: UpdateChildrenDTO): Promise<Children> {
+  async update(
+    @Param('id') id: string,
+    @Body() data: UpdateChildrenDTO,
+  ): Promise<Children> {
     return await this.childrenService.update(id, data);
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAll(@Query() page: Page, @Query() filters: FiltersChildrenDTO): Promise<PageResponse<MappedChildrenDTO>> {
+  async getAll(
+    @Query() page: Page,
+    @Query() filters: FiltersChildrenDTO,
+  ): Promise<PageResponse<MappedChildrenDTO>> {
     return await this.childrenService.listAll(page, filters);
   }
 

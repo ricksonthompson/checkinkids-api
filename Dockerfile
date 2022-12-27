@@ -1,25 +1,23 @@
-FROM node:18-alpine as production
+FROM node:19-alpine3.15
 
-ARG NODE_ENV=production
+ARG NODE_ENV
+ARG PORT
+
 ENV NODE_ENV=${NODE_ENV}
 
-WORKDIR /app
+WORKDIR /usr/app
 
-COPY package.json ./
-COPY yarn.lock ./
-COPY tsconfig.json ./
-COPY tsconfig.build.json ./
-COPY nest-cli.json ./
-COPY src ./src
-COPY prisma ./
-COPY test ./test
+ENV TZ=America/Manaus
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN yarn --production=true
+COPY package.json yarn.lock ./
 
-COPY . .
+COPY . ./
 
+RUN yarn --prod --silent
+RUN npx prisma generate
 RUN yarn build
 
-EXPOSE 8081
+EXPOSE ${PORT}
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]

@@ -1,8 +1,8 @@
-import { Module } from "@nestjs/common";
-import { ChildrenRepository } from "../repositories/children/children.repository";
-import { ChildrenController } from "../controllers/children.controller";
-import { ChildrenService } from "../services/children.service";
-import { ResponsibleModule } from "./responsible.module";
+import { Module } from '@nestjs/common';
+import { ChildrenRepository } from '../repositories/children/children.repository';
+import { ChildrenController } from '../controllers/children.controller';
+import { ChildrenService } from '../services/children.service';
+import { ResponsibleModule } from './responsible.module';
 
 @Module({
   imports: [ResponsibleModule],
@@ -10,11 +10,10 @@ import { ResponsibleModule } from "./responsible.module";
   providers: [
     ChildrenService,
     {
-      provide: "IChildrenRepository",
-      useClass: ChildrenRepository
-    }
+      provide: 'IChildrenRepository',
+      useClass: ChildrenRepository,
+    },
   ],
-  exports: [ChildrenService]
+  exports: [ChildrenService],
 })
-
-export class ChildrenModule { }
+export class ChildrenModule {}

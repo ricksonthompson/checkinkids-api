@@ -1,6 +1,6 @@
-import { EResponsibleType } from "../../utils/ETypes"
+import { EResponsibleType } from '../../utils/ETypes';
 
 export class ResponsiblesPropsDTO {
-  responsibleId: string
-  type: EResponsibleType
+  responsibleId: string;
+  type: EResponsibleType;
 }
