@@ -1,6 +1,13 @@
-import { Responsible } from '../../entities/responsible.entity';
+import { ChildrenOnCult } from '../../entities/childrenOnCult.entity';
 
 export default interface IChildrenOnCultRepository {
-  delete(id: string): Promise<Responsible>;
-  findById(id: string): Promise<Responsible>;
+  update(
+    cultId: string,
+    childrenId: string,
+    data: ChildrenOnCult,
+  ): Promise<ChildrenOnCult>;
+  findByCultAndChildren(
+    cultId: string,
+    childrenId: string,
+  ): Promise<ChildrenOnCult>;
 }

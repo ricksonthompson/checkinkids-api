@@ -1,3 +1,4 @@
+import { EShiftCult, EStatusCult } from '@prisma/client';
 import { Responsible } from '../../entities/responsible.entity';
 
 export class MappedCultDTO {
@@ -5,7 +6,8 @@ export class MappedCultDTO {
   title: string;
   date: Date;
   time: string;
-  status: string;
+  status: EStatusCult;
+  shift: EShiftCult;
   childrens: {
     id: string;
     name: string;
@@ -15,7 +17,8 @@ export class MappedCultDTO {
     verse?: boolean;
     meditation?: boolean;
     attendance?: boolean;
-    isVisited?: boolean;
+    isInvited?: boolean;
+    updatedAt: Date;
   }[];
   createdAt: Date;
 }

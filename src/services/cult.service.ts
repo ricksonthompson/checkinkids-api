@@ -4,11 +4,12 @@ import ICultRepository from '../repositories/cult/cult.repository.contract';
 import { Page, PageResponse } from '../configs/database/page.model';
 import { CreateCultDTO } from '../dtos/cult/createCult.dto';
 import { MappedCultDTO } from '../dtos/cult/mappedCult.dto';
-import { MappedChildrenDTO } from '../dtos/children/mappedChildren.dto';
 import { UpdateCultDTO } from '../dtos/cult/updateCult.dto';
-import { AddChildrensOnCultDTO } from 'src/dtos/cult/addChildrensOnCult.dto';
-import { Children } from 'src/entities/children.entity';
+import { AddChildrensOnCultDTO } from '../dtos/cult/addChildrensOnCult.dto';
+import { Children } from '../entities/children.entity';
 import { ChildrenService } from './children.service';
+import { UpdatePointsChildrensOnCultDTO } from '../dtos/childrensOnCult/updatePointsChildrensOnCult.dto';
+import { ChildrensOnCultService } from './childrensOnCult.service';
 
 @Injectable()
 export class CultService {
@@ -16,10 +17,29 @@ export class CultService {
     @Inject('ICultRepository')
     private readonly cultRepository: ICultRepository,
     private readonly childrenService: ChildrenService,
+    private readonly childrensOnCultService: ChildrensOnCultService,
   ) {}
 
   async create(payload: CreateCultDTO): Promise<Cult> {
     return await this.cultRepository.create(new Cult(payload));
+  }
+
+  async registerPointsChildren(
+    cultId: string,
+    childrenId: string,
+    payload: UpdatePointsChildrensOnCultDTO,
+  ): Promise<MappedCultDTO> {
+    const cult = await this.listById(cultId);
+
+    await this.childrensOnCultService.registerPoints(
+      cult.id,
+      childrenId,
+      payload,
+    );
+
+    const updatedCult = await this.verify(cult.id);
+
+    return this.mapperOne(updatedCult);
   }
 
   async addChildrensOnCult(
@@ -97,11 +117,21 @@ export class CultService {
     );
   }
 
+  private async verify(id: string): Promise<Cult> {
+    const cult = await this.cultRepository.findById(id);
+
+    if (!cult)
+      throw new HttpException('Culto não encontrado!', HttpStatus.NOT_FOUND);
+
+    return cult;
+  }
+
   private mapperMany(cults: Cult[]): MappedCultDTO[] {
     return cults.map((cult) => {
       return {
         id: cult.id,
         title: cult.title,
+        shift: cult.shift,
         date: cult.date,
         time: cult.time,
         status: cult.status,
@@ -115,7 +145,8 @@ export class CultService {
               verse: item.verse,
               meditation: item.meditation,
               attendance: item.attendance,
-              isVisited: item.isVisited,
+              isInvited: item.isInvited,
+              updatedAt: item.updatedAt,
             }))
           : null,
         createdAt: cult.createdAt,
@@ -127,6 +158,7 @@ export class CultService {
     return {
       id: cult.id,
       title: cult.title,
+      shift: cult.shift,
       date: cult.date,
       time: cult.time,
       status: cult.status,
@@ -140,7 +172,8 @@ export class CultService {
             verse: item.verse,
             meditation: item.meditation,
             attendance: item.attendance,
-            isVisited: item.isVisited,
+            isInvited: item.isInvited,
+            updatedAt: item.updatedAt,
           }))
         : null,
       createdAt: cult.createdAt,

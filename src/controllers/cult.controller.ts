@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { Page, PageResponse } from '../configs/database/page.model';
@@ -14,6 +15,7 @@ import { CreateCultDTO } from '../dtos/cult/createCult.dto';
 import { Cult } from '../entities/cult.entity';
 import { MappedCultDTO } from '../dtos/cult/mappedCult.dto';
 import { AddChildrensOnCultDTO } from '../dtos/cult/addChildrensOnCult.dto';
+import { UpdatePointsChildrensOnCultDTO } from 'src/dtos/childrensOnCult/updatePointsChildrensOnCult.dto';
 
 @Controller('/api/cults')
 export class CultController {
@@ -44,5 +46,19 @@ export class CultController {
   @HttpCode(HttpStatus.OK)
   async getById(@Param('id') id: string): Promise<MappedCultDTO> {
     return await this.cultService.listById(id);
+  }
+
+  @Put('/:id/childrens/:childrenId')
+  @HttpCode(HttpStatus.OK)
+  async registerPoints(
+    @Param('id') id: string,
+    @Param('childrenId') childrenId: string,
+    @Body() payload: UpdatePointsChildrensOnCultDTO,
+  ): Promise<MappedCultDTO> {
+    return await this.cultService.registerPointsChildren(
+      id,
+      childrenId,
+      payload,
+    );
   }
 }
