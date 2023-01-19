@@ -1,7 +1,12 @@
-export enum EKanbanType {
-  TYPE_2W = '2W',
-  TYPE_4W = '4W',
-  TYPE_ACG = 'ACG',
+export enum EStatusCult {
+  PENDING = 'PENDENTE',
+  IN_PROGRESS = 'EM_ANDAMENTO',
+  FINISHED = 'FINALIZADO',
+}
+
+export enum EShiftCult {
+  MORNING = 'MATINAL',
+  NIGHT = 'NOITE',
 }
 
 export enum EResponsibleType {
@@ -9,4 +14,9 @@ export enum EResponsibleType {
   MOM = 'MAE',
   RELATED = 'PARENTE',
   OTHER = 'OUTRO',
+}
+
+export enum ETimeCult {
+  MORNING = '08h',
+  NIGHT = '19h',
 }

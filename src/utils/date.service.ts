@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { differenceInDays, differenceInSeconds, isDate } from 'date-fns';
-import { zonedTimeToUtc } from 'date-fns-tz';
 import {
   dateInFormatOneRgx,
   dateInFormatThreeRgx,
   dateInFormatTwoRgx,
 } from './Regex';
+import { zonedTimeToUtc } from 'date-fns-tz';
 
 export function getDateInLocaleTime(date: Date): Date {
   const newDate = zonedTimeToUtc(date, 'UTC');

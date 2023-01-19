@@ -1,23 +1,24 @@
-FROM node:19-alpine3.15
+FROM node:lts-alpine AS builder
 
-ARG NODE_ENV
-ARG PORT
+# Create app directory
+WORKDIR /app
 
-ENV NODE_ENV=${NODE_ENV}
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+COPY prisma ./prisma/
 
-WORKDIR /usr/app
+# Install app dependencies
+RUN npm install
 
-ENV TZ=America/Manaus
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+COPY . .
 
-COPY package.json yarn.lock ./
+RUN npm run build
 
-COPY . ./
+FROM node:lts-alpine
 
-RUN yarn --prod --silent
-RUN npx prisma generate
-RUN yarn build
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
 
-EXPOSE ${PORT}
-
-CMD ["yarn", "start"]
+EXPOSE 3000
+CMD [ "npm", "run", "start" ]
