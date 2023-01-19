@@ -2,8 +2,9 @@ import { Responsible } from '../../entities/responsible.entity';
 
 export class MappedCultDTO {
   id: string;
-  date: Date;
   title: string;
+  date: Date;
+  time: string;
   status: string;
   childrens: {
     id: string;

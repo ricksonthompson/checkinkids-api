@@ -101,10 +101,10 @@ export class CultService {
     return cults.map((cult) => {
       return {
         id: cult.id,
-        date: cult.date,
-        createdAt: cult.createdAt,
-        status: cult.status,
         title: cult.title,
+        date: cult.date,
+        time: cult.time,
+        status: cult.status,
         childrens: cult.childrens.length
           ? cult.childrens.map((item) => ({
               id: item.children.id,
@@ -118,6 +118,7 @@ export class CultService {
               isVisited: item.isVisited,
             }))
           : null,
+        createdAt: cult.createdAt,
       };
     });
   }
@@ -125,10 +126,10 @@ export class CultService {
   private mapperOne(cult: Cult): MappedCultDTO {
     return {
       id: cult.id,
-      date: cult.date,
-      createdAt: cult.createdAt,
-      status: cult.status,
       title: cult.title,
+      date: cult.date,
+      time: cult.time,
+      status: cult.status,
       childrens: cult.childrens.length
         ? cult.childrens.map((item) => ({
             id: item.children.id,
@@ -142,6 +143,7 @@ export class CultService {
             isVisited: item.isVisited,
           }))
         : null,
+      createdAt: cult.createdAt,
     };
   }
 }
