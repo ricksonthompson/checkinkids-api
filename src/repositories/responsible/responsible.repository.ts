@@ -5,7 +5,6 @@ import { PrismaService } from '../../configs/database/prisma.service';
 import { Responsible } from '../../entities/responsible.entity';
 import IResponsibleRepository from './responsible.repository.contract';
 import { getDateInLocaleTime } from '../../utils/date.service';
-import { FiltersResponsibleDTO } from 'src/dtos/responsible/filtersResponsible.dto';
 
 @Injectable()
 export class ResponsibleRepository
@@ -23,30 +22,10 @@ export class ResponsibleRepository
   }
 
   update(data: Responsible): Promise<any> {
-    delete data.childrens;
-
     return this.repository.responsible.update({
       where: { id: data.id },
       data: {
-        ...data,
-        childrens: {
-          updateMany: data.childrens.map((children) => {
-            return {
-              data: { ...children },
-              where: {
-                childrenId: children.id,
-              },
-            };
-          }),
-        },
         updatedAt: getDateInLocaleTime(new Date()),
-      },
-      select: {
-        childrens: {
-          select: {
-            children: true,
-          },
-        },
       },
     });
   }
@@ -69,10 +48,7 @@ export class ResponsibleRepository
     });
   }
 
-  async findAll(
-    page: Page,
-    filters: FiltersResponsibleDTO,
-  ): Promise<PageResponse<Responsible>> {
+  async findAll(page: Page): Promise<PageResponse<Responsible>> {
     const items = await this.repository.responsible.findMany({
       ...this.buildPage(page),
     });
@@ -89,8 +65,7 @@ export class ResponsibleRepository
     return this.repository.responsible.create({
       data: {
         id: data.id,
-        firstName: data.firstName,
-        lastName: data.lastName,
+        name: data.name,
         email: data.email,
         phone: data.phone,
       },

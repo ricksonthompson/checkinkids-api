@@ -86,8 +86,7 @@ export class ResponsibleService {
     return responsibles.map((responsible) => {
       return {
         id: responsible.id,
-        firstName: responsible.firstName,
-        lastName: responsible.lastName,
+        name: responsible.name,
         email: responsible.email,
         phone: responsible.phone,
         createdAt: responsible.createdAt,

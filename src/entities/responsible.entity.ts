@@ -3,11 +3,10 @@ import { Children } from './children.entity';
 
 export class Responsible {
   id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
+  name: string;
+  email?: string;
   phone: string;
-  childrens?: Array<Children>;
+  children?: Children | null;
   createdAt: Date;
   updatedAt?: Date;
 
