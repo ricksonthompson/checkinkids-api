@@ -1,11 +1,10 @@
-import { Address } from '../../valueObjects/address.vo';
+import { Responsible } from '../../entities/responsible.entity';
 
 export class MappedChildrenDTO {
   id: string;
-  firstName: string;
-  lastName: string;
-  birthDate: string;
-  observations: any;
-  address?: Address;
+  name: string;
+  birthDate: Date;
+  observations: string;
+  responsibles: Responsible[];
   createdAt: Date;
 }

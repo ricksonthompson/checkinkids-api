@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { FiltersChildrenDTO } from '../../dtos/children/filtersChildren.dto';
 import { Page, PageResponse } from '../../configs/database/page.model';
 import { Pageable } from '../../configs/database/pageable.service';
 import { PrismaService } from '../../configs/database/prisma.service';
@@ -23,25 +22,12 @@ export class ChildrenRepository
   }
 
   update(data: Children): Promise<Children> {
-    const { address } = data;
-
-    delete address.childrenId;
-
     return this.repository.children.update({
       where: { id: data.id },
       data: {
-        ...data,
+        birthDate: data.birthDate,
         updatedAt: getDateInLocaleTime(new Date()),
-        address: data.address
-          ? {
-              upsert: {
-                update: address,
-                create: address,
-              },
-            }
-          : undefined,
       },
-      include: { address: true },
     });
   }
 
@@ -51,12 +37,12 @@ export class ChildrenRepository
     });
   }
 
-  async findAll(
-    page: Page,
-    filters: FiltersChildrenDTO,
-  ): Promise<PageResponse<Children>> {
+  async findAll(page: Page): Promise<PageResponse<Children>> {
     const items = await this.repository.children.findMany({
       ...this.buildPage(page),
+      include: {
+        responsibles: true,
+      },
     });
 
     const total = await this.repository.children.count();
@@ -72,30 +58,19 @@ export class ChildrenRepository
       data: {
         id: data.id,
         birthDate: data.birthDate,
-        firstName: data.firstName,
-        lastName: data.lastName,
+        name: data.name,
         observations: data.observations,
-        address: {
-          create: data.address,
-        },
-        responsibles: {
-          createMany: {
-            data: data.responsiblesProps.map((item) => {
-              return {
-                responsibleId: item.responsibleId,
-                type: item.type,
-              };
-            }),
-          },
-        },
+        responsibles: data.responsibles.length
+          ? {
+              connect: data.responsibles.map((_responsible) => ({
+                id: _responsible.id,
+              })),
+            }
+          : undefined,
+        createdAt: getDateInLocaleTime(new Date()),
       },
       include: {
-        address: true,
-        responsibles: {
-          select: {
-            responsible: true,
-          },
-        },
+        responsibles: true,
       },
     });
   }

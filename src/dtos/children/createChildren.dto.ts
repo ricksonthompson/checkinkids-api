@@ -2,31 +2,21 @@ import { Type } from 'class-transformer';
 import {
   IsNotEmpty,
   Length,
-  IsNotEmptyObject,
   IsOptional,
-  ValidateNested,
   IsString,
+  IsDateString,
+  ValidateNested,
 } from 'class-validator';
-import { AddressDTO } from '../address/address.dto';
 import { ResponsiblesDTO } from './responsibles.dto';
 
 export class CreateChildrenDTO {
   @IsNotEmpty()
   @Length(2, 55)
-  firstName: string;
+  name: string;
 
+  @IsDateString()
   @IsNotEmpty()
-  @Length(2, 55)
-  lastName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  birthDate: string;
-
-  @ValidateNested()
-  @Type(() => AddressDTO)
-  @IsNotEmpty()
-  address: AddressDTO;
+  birthDate: Date;
 
   @IsString()
   @IsOptional()

@@ -1,12 +1,9 @@
-import { Type } from 'class-transformer';
 import {
   IsNotEmptyObject,
   IsOptional,
   IsString,
   Length,
-  ValidateNested,
 } from 'class-validator';
-import { AddressDTO } from '../address/address.dto';
 
 export class UpdateChildrenDTO {
   @IsOptional()
@@ -20,11 +17,6 @@ export class UpdateChildrenDTO {
   @IsString()
   @IsOptional()
   birthDate: string;
-
-  @ValidateNested()
-  @Type(() => AddressDTO)
-  @IsOptional()
-  address: AddressDTO;
 
   @IsNotEmptyObject()
   @IsOptional()

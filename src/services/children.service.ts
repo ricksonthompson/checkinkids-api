@@ -6,9 +6,8 @@ import { FiltersChildrenDTO } from '../dtos/children/filtersChildren.dto';
 import { MappedChildrenDTO } from '../dtos/children/mappedChildren.dto';
 import { CreateChildrenDTO } from '../dtos/children/createChildren.dto';
 import { UpdateChildrenDTO } from '../dtos/children/updateChildren.dto';
-import { Address } from '../valueObjects/address.vo';
 import { ResponsibleService } from './responsible.service';
-import { ResponsiblesPropsDTO } from 'src/dtos/children/responsiblesProps.dto';
+import { Responsible } from 'src/entities/responsible.entity';
 
 @Injectable()
 export class ChildrenService {
@@ -19,31 +18,21 @@ export class ChildrenService {
   ) {}
 
   async create(payload: CreateChildrenDTO): Promise<Children> {
-    const responsiblesProps: Array<ResponsiblesPropsDTO> = [];
+    const { responsibles, birthDate, name, observations } = payload;
+    const responsiblesCreated: Responsible[] = [];
 
-    for await (const responsible of payload.responsibles) {
-      await this.responsibleService.verifyResponsible(
-        responsible.email,
-        responsible.phone,
-      );
+    if (responsibles.length) {
+      console.log('entrei');
 
-      const newResponsible = await this.responsibleService.create({
-        firstName: responsible.firstName,
-        lastName: responsible.lastName,
-        email: responsible.email,
-        phone: responsible.phone,
-      });
-
-      responsiblesProps.push({
-        responsibleId: newResponsible.id,
-        type: responsible.type,
-      });
+      for await (const responsible of responsibles) {
+        responsiblesCreated.push(
+          await this.responsibleService.create(responsible),
+        );
+      }
     }
 
-    const address = payload.address ? new Address(payload.address) : undefined;
-
     return await this.childrenRepository.create(
-      new Children(payload, responsiblesProps, address),
+      new Children({ birthDate, name, observations }, responsiblesCreated),
     );
   }
 
@@ -90,11 +79,10 @@ export class ChildrenService {
     return childrens.map((children) => {
       return {
         id: children.id,
+        name: children.name,
         birthDate: children.birthDate,
-        lastName: children.lastName,
         observations: children.observations,
-        firstName: children.firstName,
-        address: children.address,
+        responsibles: children.responsibles,
         createdAt: children.createdAt,
       };
     });
