@@ -1,5 +1,5 @@
+# Commands by Docker
 build:
-	yarn
 	yarn build
 	docker compose up -d --build 
 
@@ -7,7 +7,6 @@ build:
 
 deploy:
 	git pull
-	yarn
 	yarn build
 	docker compose up -d --build 
 
@@ -27,3 +26,16 @@ logs:
 	docker logs checkinkids-api -f
 
 .PHONY: logs
+
+# Commands by PM2
+build-pm2:
+	yarn
+	yarn build
+	pm2 start dist/main.js -f --name checkinkids-api
+
+.PHONY: build-pm2
+
+logs-pm2:
+	pm2 logs checkinkids-api
+
+.PHONY: logs-pm2
