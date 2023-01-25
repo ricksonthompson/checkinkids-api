@@ -1,15 +1,17 @@
 -- CreateEnum
-CREATE TYPE "EStatusCult" AS ENUM ('PENDENTE', 'EM_ANDAMENTO', 'FINALIZADO');
+CREATE TYPE "EStatusCult" AS ENUM ('Pendente', 'Em_Andamento', 'Finalizado');
 
 -- CreateEnum
-CREATE TYPE "ETypeCult" AS ENUM ('MATINAL', 'FAMILIAR');
+CREATE TYPE "EShiftCult" AS ENUM ('Matinal', 'Noturno');
 
 -- CreateTable
 CREATE TABLE "Cult" (
     "id" UUID NOT NULL,
-    "date" VARCHAR(255) NOT NULL,
+    "date" TIMESTAMP NOT NULL,
+    "time" TEXT NOT NULL,
     "title" VARCHAR(255) NOT NULL,
-    "status" "EStatusCult" NOT NULL DEFAULT 'PENDENTE',
+    "status" "EStatusCult" NOT NULL DEFAULT 'Pendente',
+    "shift" "EShiftCult" NOT NULL,
     "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP,
 
@@ -20,6 +22,7 @@ CREATE TABLE "Cult" (
 CREATE TABLE "ChildrenOnCult" (
     "cultId" UUID NOT NULL,
     "childrenId" UUID NOT NULL,
+    "isInvited" BOOLEAN NOT NULL DEFAULT false,
     "verse" BOOLEAN NOT NULL DEFAULT false,
     "attendance" BOOLEAN NOT NULL DEFAULT false,
     "meditation" BOOLEAN NOT NULL DEFAULT false,
@@ -47,7 +50,7 @@ CREATE TABLE "Responsible" (
     "name" VARCHAR(255) NOT NULL,
     "phone" VARCHAR(15) NOT NULL,
     "email" VARCHAR(255),
-    "childrenId" UUID NOT NULL,
+    "childrenId" UUID,
     "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP,
 
@@ -70,4 +73,4 @@ ALTER TABLE "ChildrenOnCult" ADD CONSTRAINT "ChildrenOnCult_cultId_fkey" FOREIGN
 ALTER TABLE "ChildrenOnCult" ADD CONSTRAINT "ChildrenOnCult_childrenId_fkey" FOREIGN KEY ("childrenId") REFERENCES "Children"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Responsible" ADD CONSTRAINT "Responsible_childrenId_fkey" FOREIGN KEY ("childrenId") REFERENCES "Children"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Responsible" ADD CONSTRAINT "Responsible_childrenId_fkey" FOREIGN KEY ("childrenId") REFERENCES "Children"("id") ON DELETE SET NULL ON UPDATE CASCADE;
