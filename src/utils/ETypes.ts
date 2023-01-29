@@ -1,12 +1,12 @@
 export enum EStatusCult {
-  PENDING = 'PENDENTE',
-  IN_PROGRESS = 'EM_ANDAMENTO',
-  FINISHED = 'FINALIZADO',
+  PENDING = 'Pendente',
+  IN_PROGRESS = 'Em_Andamento',
+  FINISHED = 'Finalizado',
 }
 
 export enum EShiftCult {
-  MORNING = 'MATINAL',
-  NIGHT = 'NOITE',
+  MORNING = 'Matinal',
+  NIGHT = 'Noturno',
 }
 
 export enum EResponsibleType {
@@ -17,6 +17,6 @@ export enum EResponsibleType {
 }
 
 export enum ETimeCult {
-  MORNING = '08h',
-  NIGHT = '19h',
+  MORNING = '08:00',
+  NIGHT = '19:00',
 }
