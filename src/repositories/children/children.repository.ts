@@ -5,6 +5,8 @@ import { PrismaService } from '../../configs/database/prisma.service';
 import { Children } from '../../entities/children.entity';
 import IChildrenRepository from './children.repository.contract';
 import { getDateInLocaleTime } from '../../utils/date.service';
+import { generateQueryForChildrens } from 'src/configs/database/Queries';
+import { FiltersChildrenDTO } from 'src/dtos/children/filtersChildren.dto';
 
 @Injectable()
 export class ChildrenRepository
@@ -37,20 +39,30 @@ export class ChildrenRepository
     });
   }
 
-  async findAll(page: Page): Promise<PageResponse<Children>> {
-    const items = await this.repository.children.findMany({
-      ...this.buildPage(page),
-      include: {
-        responsibles: true,
-      },
-    });
+  async findAll(
+    page: Page,
+    filters: FiltersChildrenDTO,
+  ): Promise<PageResponse<Children>> {
+    const condition = generateQueryForChildrens(filters);
+
+    const items = condition
+      ? await this.repository.children.findMany({
+          ...this.buildPage(page),
+          where: condition,
+          include: {
+            responsibles: true,
+          },
+        })
+      : await this.repository.children.findMany({
+          ...this.buildPage(page),
+          include: {
+            responsibles: true,
+          },
+        });
 
     const total = await this.repository.children.count();
 
-    return this.buildPageResponse(
-      items,
-      Array.isArray(total) ? total.length : total,
-    );
+    return this.buildPageResponse(items, condition ? items.length : total);
   }
 
   create(data: Children): Promise<Children> {

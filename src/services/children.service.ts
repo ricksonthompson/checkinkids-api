@@ -22,8 +22,6 @@ export class ChildrenService {
     const responsiblesCreated: Responsible[] = [];
 
     if (responsibles.length) {
-      console.log('entrei');
-
       for await (const responsible of responsibles) {
         responsiblesCreated.push(
           await this.responsibleService.create(responsible),

@@ -1,18 +1,31 @@
 import { FiltersChildrenDTO } from '../../dtos/children/filtersChildren.dto';
 import { IQueryChildren } from '../../dtos/children/queryChildren.dto';
 
-export function generateQueryByFiltersForChildrens(
+export function generateQueryForChildrens(
   filters: FiltersChildrenDTO,
 ): IQueryChildren {
   const fields = {
-    firstName: () => ({
-      firstName: filters.firstName,
-    }),
-    lastName: () => ({
-      lastName: filters.lastName,
+    name: () => ({
+      name: {
+        contains: filters.name,
+      },
     }),
     birthDate: () => ({
       birthDate: filters.birthDate,
+    }),
+    observations: () => ({
+      observations: {
+        contains: filters.observations,
+      },
+    }),
+    responsible: () => ({
+      responsibles: {
+        every: {
+          name: {
+            contains: filters.responsible,
+          },
+        },
+      },
     }),
   };
 
@@ -20,7 +33,7 @@ export function generateQueryByFiltersForChildrens(
 
   let query: IQueryChildren;
 
-  let queryBuilder: Function;
+  let queryBuilder: () => IQueryChildren;
 
   for (const filter in filters) {
     if (keysFields.includes(filter)) {

@@ -1,5 +1,6 @@
 export class FiltersChildrenDTO {
-  firstName?: number;
-  lastName?: string;
-  birthDate?: string;
+  birthDate?: Date;
+  name?: string;
+  observations?: string;
+  responsible?: string;
 }

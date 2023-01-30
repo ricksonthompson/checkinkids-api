@@ -1,5 +1,16 @@
 export interface IQueryChildren {
-  firstName?: number;
-  lastName?: string;
-  birthDate?: string;
+  birthDate?: Date;
+  name?: {
+    contains: string;
+  };
+  observations?: {
+    contains: string;
+  };
+  responsibles?: {
+    every: {
+      name: {
+        contains: string;
+      };
+    };
+  };
 }
