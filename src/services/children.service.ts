@@ -7,7 +7,7 @@ import { MappedChildrenDTO } from '../dtos/children/mappedChildren.dto';
 import { CreateChildrenDTO } from '../dtos/children/createChildren.dto';
 import { UpdateChildrenDTO } from '../dtos/children/updateChildren.dto';
 import { ResponsibleService } from './responsible.service';
-import { Responsible } from 'src/entities/responsible.entity';
+import { Responsible } from '../entities/responsible.entity';
 
 @Injectable()
 export class ChildrenService {

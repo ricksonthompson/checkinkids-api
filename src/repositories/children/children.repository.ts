@@ -5,8 +5,8 @@ import { PrismaService } from '../../configs/database/prisma.service';
 import { Children } from '../../entities/children.entity';
 import IChildrenRepository from './children.repository.contract';
 import { getDateInLocaleTime } from '../../utils/date.service';
-import { generateQueryForChildrens } from 'src/configs/database/Queries';
-import { FiltersChildrenDTO } from 'src/dtos/children/filtersChildren.dto';
+import { generateQueryForChildrens } from '../../configs/database/Queries';
+import { FiltersChildrenDTO } from '../../dtos/children/filtersChildren.dto';
 
 @Injectable()
 export class ChildrenRepository

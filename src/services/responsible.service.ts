@@ -5,7 +5,7 @@ import { Page, PageResponse } from '../configs/database/page.model';
 import { FiltersResponsibleDTO } from '../dtos/responsible/filtersResponsible.dto';
 import { MappedResponsibleDTO } from '../dtos/responsible/mappedResponsible.dto';
 import { CreateResponsibleDTO } from '../dtos/responsible/createResponsible.dto';
-import { UpdateResponsibleDTO } from 'src/dtos/responsible/updateResponsible.dto';
+import { UpdateResponsibleDTO } from '../dtos/responsible/updateResponsible.dto';
 
 @Injectable()
 export class ResponsibleService {

@@ -2,11 +2,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { fromUnixTime, isAfter } from 'date-fns';
 import * as bcrypt from 'bcrypt';
-import { setPermissions } from 'src/utils/roles.permissions';
+import { setPermissions } from '../utils/roles.permissions';
 import { ERoles } from '../utils/ETypes';
 import { UserService } from './user.service';
-import { UserLoginDTO } from 'src/dtos/user/userLogin.dto';
-import { LoggedUserDTO } from 'src/dtos/user/loggedUser.dto';
+import { UserLoginDTO } from '../dtos/user/userLogin.dto';
+import { LoggedUserDTO } from '../dtos/user/loggedUser.dto';
 
 @Injectable()
 export class AuthService {

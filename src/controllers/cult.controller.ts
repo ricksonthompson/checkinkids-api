@@ -15,7 +15,7 @@ import { CreateCultDTO } from '../dtos/cult/createCult.dto';
 import { Cult } from '../entities/cult.entity';
 import { MappedCultDTO } from '../dtos/cult/mappedCult.dto';
 import { AddChildrensOnCultDTO } from '../dtos/cult/addChildrensOnCult.dto';
-import { UpdatePointsChildrensOnCultDTO } from 'src/dtos/childrensOnCult/updatePointsChildrensOnCult.dto';
+import { UpdatePointsChildrensOnCultDTO } from '../dtos/childrensOnCult/updatePointsChildrensOnCult.dto';
 
 @Controller('/api/cults')
 export class CultController {

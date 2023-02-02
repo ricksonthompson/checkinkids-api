@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ChildrenOnCult } from 'src/entities/childrenOnCult.entity';
-import { getDateInLocaleTime } from 'src/utils/date.service';
+import { ChildrenOnCult } from '../../entities/childrenOnCult.entity';
+import { getDateInLocaleTime } from '../../utils/date.service';
 import { Pageable } from '../../configs/database/pageable.service';
 import { PrismaService } from '../../configs/database/prisma.service';
 import IChildrenOnCultRepository from './childrenOnCult.repository.contract';

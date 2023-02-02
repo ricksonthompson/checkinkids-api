@@ -5,7 +5,7 @@ import {
   IsPhoneNumber,
   Length,
 } from 'class-validator';
-import { EUserType } from 'src/utils/ETypes';
+import { EUserType } from '../../utils/ETypes';
 
 export class UpdateUserDTO {
   @IsOptional()
