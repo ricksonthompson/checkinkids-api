@@ -20,3 +20,13 @@ export enum ETimeCult {
   MORNING = '08:00',
   NIGHT = '19:00',
 }
+
+export enum EUserType {
+  LEADER = 'LEADER',
+  MEMBER = 'MEMBER',
+}
+
+export enum ERoles {
+  ROLE_LEADER = 'LEADER',
+  ROLE_MEMBER = 'MEMBER',
+}

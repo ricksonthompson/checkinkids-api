@@ -5,6 +5,8 @@ import { ApiModule } from './api.module';
 import { RepositoryModule } from './repository.module';
 import { CultModule } from './cult.module';
 import { ChildrensOnCultModule } from './childrensOnCult.module';
+import { UserModule } from './user.module';
+import { AuthModule } from './auth.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { ChildrensOnCultModule } from './childrensOnCult.module';
     ChildrenModule,
     CultModule,
     ChildrensOnCultModule,
+    UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
