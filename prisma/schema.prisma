@@ -9,64 +9,64 @@ generator client {
 }
 
 model Cult {
-  id                    String            @id @unique @db.Uuid
-  date                  DateTime          @db.Timestamp
-  time                  String
-  title                 String            @db.VarChar(255)
-  status                EStatusCult       @default(Pendente)
-  shift                 EShiftCult        
-  childrens             ChildrenOnCult[]
-  createdAt             DateTime          @default(now()) @db.Timestamp
-  updatedAt             DateTime?         @db.Timestamp
+  id        String           @id @unique @db.Uuid
+  date      DateTime         @db.Timestamp
+  time      String
+  title     String           @db.VarChar(255)
+  status    EStatusCult      @default(Pendente)
+  shift     EShiftCult
+  childrens ChildrenOnCult[]
+  createdAt DateTime         @default(now()) @db.Timestamp
+  updatedAt DateTime?        @db.Timestamp
 }
 
 model ChildrenOnCult {
-  cult                  Cult              @relation(fields: [cultId], references: [id])
-  cultId                String            @db.Uuid
-  children              Children          @relation(fields: [childrenId], references: [id])
-  childrenId            String            @db.Uuid
-  isInvited             Boolean           @default(false)
-  verse                 Boolean           @default(false)
-  attendance            Boolean           @default(false)
-  meditation            Boolean           @default(false)
-  createdAt             DateTime          @default(now()) @db.Timestamp
-  updatedAt             DateTime?         @db.Timestamp
+  cult       Cult      @relation(fields: [cultId], references: [id])
+  cultId     String    @db.Uuid
+  children   Children  @relation(fields: [childrenId], references: [id])
+  childrenId String    @db.Uuid
+  isInvited  Boolean   @default(false)
+  verse      Boolean   @default(false)
+  attendance Boolean   @default(false)
+  meditation Boolean   @default(false)
+  createdAt  DateTime  @default(now()) @db.Timestamp
+  updatedAt  DateTime? @db.Timestamp
 
   @@id([cultId, childrenId])
 }
 
 model Children {
-  id                    String            @id @unique @db.Uuid
-  name                  String            @db.VarChar(255)
-  birthDate             DateTime          @db.Timestamp
-  responsibles          Responsible[]
-  observations          String?           @db.VarChar(255)
-  cults                 ChildrenOnCult[]
-  createdAt             DateTime          @default(now()) @db.Timestamp
-  updatedAt             DateTime?         @db.Timestamp
+  id           String           @id @unique @db.Uuid
+  name         String           @db.VarChar(255)
+  birthDate    DateTime         @db.Timestamp
+  responsibles Responsible[]
+  observations String?          @db.VarChar(255)
+  cults        ChildrenOnCult[]
+  createdAt    DateTime         @default(now()) @db.Timestamp
+  updatedAt    DateTime?        @db.Timestamp
 }
 
 model Responsible {
-  id                    String            @id @unique @db.Uuid
-  name                  String            @db.VarChar(255)
-  phone                 String            @db.VarChar(15)
-  email                 String?           @db.VarChar(255)
-  children              Children?         @relation(fields: [childrenId], references: [id])
-  childrenId            String?           @db.Uuid
-  createdAt             DateTime          @default(now()) @db.Timestamp
-  updatedAt             DateTime?         @db.Timestamp
+  id         String    @id @unique @db.Uuid
+  name       String    @db.VarChar(255)
+  phone      String    @db.VarChar(15)
+  email      String?   @db.VarChar(255)
+  children   Children? @relation(fields: [childrenId], references: [id])
+  childrenId String?   @db.Uuid
+  createdAt  DateTime  @default(now()) @db.Timestamp
+  updatedAt  DateTime? @db.Timestamp
 }
 
 model User {
-  id                    String            @id @unique @db.Uuid
-  name                  String            @db.VarChar(255)
-  phone                 String            @db.VarChar(15)
-  email                 String?           @db.VarChar(255)
-  profileUrl            String?           
-  type                  EUserType
-  password              String            @db.VarChar(100)
-  createdAt             DateTime          @default(now()) @db.Timestamp
-  updatedAt             DateTime?         @db.Timestamp
+  id         String    @id @unique @db.Uuid
+  name       String    @db.VarChar(255)
+  phone      String    @db.VarChar(15)
+  email      String?   @db.VarChar(255)
+  profileUrl String?
+  type       EUserType
+  password   String    @db.VarChar(100)
+  createdAt  DateTime  @default(now()) @db.Timestamp
+  updatedAt  DateTime? @db.Timestamp
 }
 
 enum EUserType {

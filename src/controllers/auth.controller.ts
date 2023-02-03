@@ -12,6 +12,8 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   async employeeAuth(@Body() payload: UserLoginDTO): Promise<LoggedUserDTO> {
+    console.log(payload);
+
     return await this.authService.userLogin(payload);
   }
 }

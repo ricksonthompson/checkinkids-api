@@ -10,6 +10,7 @@ import { Children } from '../entities/children.entity';
 import { ChildrenService } from './children.service';
 import { UpdatePointsChildrensOnCultDTO } from '../dtos/childrensOnCult/updatePointsChildrensOnCult.dto';
 import { ChildrensOnCultService } from './childrensOnCult.service';
+import { EShiftCult, ETimeCult } from 'src/utils/ETypes';
 
 @Injectable()
 export class CultService {
@@ -20,8 +21,29 @@ export class CultService {
     private readonly childrensOnCultService: ChildrensOnCultService,
   ) {}
 
+  // TODO: Método para iniciar e finalizar culto
+  // async updateStatus(status: EStatusCult): Promise<MappedCultDTO> {}
+
+  // TODO: Método para pesquisar por data
+
   async create(payload: CreateCultDTO): Promise<Cult> {
-    return await this.cultRepository.create(new Cult(payload));
+    // TODO: Não permitir criar cultos com datas já passadas
+
+    // TODO: Criar cultos somente nos domingos
+
+    // TODO: Criar apenas 1 culto matinal e um culto noturno por domingo
+
+    const time =
+      payload.shift === EShiftCult.MORNING
+        ? ETimeCult.MORNING
+        : ETimeCult.NIGHT;
+
+    return await this.cultRepository.create(
+      new Cult({
+        ...payload,
+        time,
+      }),
+    );
   }
 
   async registerPointsChildren(

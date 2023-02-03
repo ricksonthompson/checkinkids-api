@@ -16,24 +16,29 @@ import { CreateUserDTO } from '../dtos/user/createUser.dto';
 import { UpdateUserDTO } from '../dtos/user/updateUser.dto';
 import { FiltersUserDTO } from '../dtos/user/filtersUser.dto';
 import { MappedUserDTO } from '../dtos/user/mappedUser.dto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Public } from 'src/decorators/public.decorator';
 
 @Controller('/api/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @Public()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() payload: CreateUserDTO): Promise<MappedUserDTO> {
     return await this.userService.create(payload);
   }
 
   @Delete('/:id')
+  @Roles('delete-user')
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id') id: string): Promise<void> {
     return await this.userService.delete(id);
   }
 
   @Put('/:id')
+  @Roles('edit-user')
   @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: string,
@@ -43,6 +48,7 @@ export class UserController {
   }
 
   @Get()
+  @Roles('list-user')
   @HttpCode(HttpStatus.OK)
   async getAll(
     @Query() page: Page,
@@ -52,6 +58,7 @@ export class UserController {
   }
 
   @Get('/:id')
+  @Roles('list-user')
   @HttpCode(HttpStatus.OK)
   async getById(@Param('id') id: string): Promise<MappedUserDTO> {
     return await this.userService.listById(id);
