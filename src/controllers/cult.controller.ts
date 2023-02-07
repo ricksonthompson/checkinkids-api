@@ -61,6 +61,10 @@ export class CultController {
     @Param('childrenId') childrenId: string,
     @Body() payload: UpdatePointsChildrensOnCultDTO,
   ): Promise<MappedCultDTO> {
+    console.log(id);
+    console.log(childrenId);
+    console.log(payload);
+
     return await this.cultService.registerPointsChildren(
       id,
       childrenId,

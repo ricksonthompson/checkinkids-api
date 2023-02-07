@@ -20,10 +20,10 @@ export class ChildrensOnCultService {
       childrenId,
     );
 
-    if (!register) {
+    if (register) {
       throw new HttpException(
-        'Registro da crinça no culto não foi encontrado!',
-        HttpStatus.NOT_FOUND,
+        'A criança já foi adicionada ao culto!',
+        HttpStatus.CONFLICT,
       );
     }
 

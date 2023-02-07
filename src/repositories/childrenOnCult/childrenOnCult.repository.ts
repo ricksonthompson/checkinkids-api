@@ -33,14 +33,23 @@ export class ChildrenOnCultRepository
     childrenId: string,
     data: ChildrenOnCult,
   ): Promise<ChildrenOnCult> {
-    return this.repository.childrenOnCult.update({
+    return this.repository.childrenOnCult.upsert({
       where: {
         cultId_childrenId: {
           cultId,
           childrenId,
         },
       },
-      data: {
+      create: {
+        cultId,
+        childrenId,
+        attendance: data.attendance,
+        isInvited: data.isInvited,
+        meditation: data.meditation,
+        verse: data.verse,
+        updatedAt: getDateInLocaleTime(new Date()),
+      },
+      update: {
         attendance: data.attendance,
         isInvited: data.isInvited,
         meditation: data.meditation,
