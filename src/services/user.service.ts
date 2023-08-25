@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  OnModuleInit,
+} from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { Page, PageResponse } from '../configs/database/page.model';
 import { FiltersUserDTO } from '../dtos/user/filtersUser.dto';
@@ -9,11 +15,31 @@ import { UpdateUserDTO } from '../dtos/user/updateUser.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class UserService {
+export class UserService implements OnModuleInit {
   constructor(
     @Inject('IUserRepository')
     private readonly userRepository: IUserRepository,
   ) {}
+
+  async onModuleInit() {
+    const userAdmin = new User({
+      email: 'admin@ibclkids.com',
+      name: 'Admin',
+      phone: '(92) 99967-7158',
+      type: 'LEADER',
+      password: bcrypt.hashSync('admin@admin', 10),
+    });
+
+    const userAlreadyExists = await this.userRepository.findByEmail(
+      userAdmin.email,
+    );
+
+    if (userAlreadyExists) return;
+
+    const createdAdmin = await this.userRepository.create(userAdmin);
+
+    console.log('User admin created successful!', createdAdmin);
+  }
 
   async create(payload: CreateUserDTO): Promise<MappedUserDTO> {
     const password = bcrypt.hashSync(payload.password, 10);
