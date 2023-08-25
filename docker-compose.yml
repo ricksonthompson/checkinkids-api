@@ -1,12 +1,12 @@
-version: '3.8'
+version: '3.7'
 
 services:
   app:
-    image: checkinkids-api:latest
-    build: 
+    image: checkin-kids-api:latest
+    build:
       dockerfile: Dockerfile
       context: .
-    container_name: checkinkids-api
+    container_name: checkin-kids-api
     ports:
       - ${PORT}:${PORT}
     restart: always

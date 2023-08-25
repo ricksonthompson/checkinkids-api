@@ -1,24 +1,27 @@
-FROM node:lts-alpine AS builder
-
-# Create app directory
-WORKDIR /app
-
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
-COPY prisma ./prisma/
-
-# Install app dependencies
-RUN npm install
-
-COPY . .
-
-RUN npm run build
-
 FROM node:lts-alpine
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/dist ./dist
+ARG NODE_ENV
+ARG PORT
 
-EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /usr/app
+
+ENV TZ=America/Manaus
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+COPY package.json yarn.lock ./
+
+RUN yarn cache clean --mirror
+
+RUN yarn global add @nestjs/cli
+
+COPY . ./
+
+RUN yarn --prod --silent
+RUN npx prisma generate
+RUN yarn build
+
+EXPOSE ${PORT}
+
+CMD ["yarn", "start"]
